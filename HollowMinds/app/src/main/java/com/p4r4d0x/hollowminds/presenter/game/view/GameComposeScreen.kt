@@ -26,11 +26,11 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GameLayout(viewModel: GameViewModel) {
+fun GameLayout(viewModel: GameViewModel, spanValue:Int) {
 
     val data: List<CharacterCardData> = viewModel.characterCardsData.collectAsState().value
     LazyVerticalGrid(
-        cells = GridCells.Fixed(4),
+        cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {
         itemsIndexed(items = data) { _, item ->

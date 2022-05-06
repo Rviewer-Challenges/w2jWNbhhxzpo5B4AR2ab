@@ -6,5 +6,5 @@ import com.p4r4d0x.hollowminds.domain.CharacterCardsRepository
 class CharacterCardsRepositoryImpl(private val datasource: CharacterCardsDatasource) :
     CharacterCardsRepository {
 
-    override fun getCharacterCards(cardsNumber: Int) = datasource.getCharacterCards(cardsNumber)
+    override fun getCharacterCards(differentItems: Int) = datasource.getCharacterCards(differentItems)
 }

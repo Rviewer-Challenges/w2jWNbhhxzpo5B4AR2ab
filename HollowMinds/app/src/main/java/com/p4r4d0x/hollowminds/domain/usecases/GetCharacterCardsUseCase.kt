@@ -13,12 +13,12 @@ class GetCharacterCardsUseCase(private val characterCardRepository: CharacterCar
         result: (List<CharacterCardData>) -> Unit
     ) {
         val job = scope.async(Dispatchers.Default) {
-            characterCardRepository.getCharacterCards(params.cardsNumber)
+            characterCardRepository.getCharacterCards(params.differentItems)
         }
         scope.launch(Dispatchers.Main) {
             result( job.await())
         }
     }
 
-    class Params(val cardsNumber:Int)
+    class Params(val differentItems:Int)
 }

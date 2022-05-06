@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.p4r4d0x.hollowminds.R
+import com.p4r4d0x.hollowminds.presenter.FragmentScreen
 import com.p4r4d0x.hollowminds.presenter.configuration.viewmodel.ConfigurationViewModel
+import com.p4r4d0x.hollowminds.presenter.navigate
 import org.koin.android.ext.android.inject
 
 class ConfigurationFragment : Fragment() {
@@ -16,13 +18,16 @@ class ConfigurationFragment : Fragment() {
 
     private fun observeViewModel() {
         with(viewModel) {
-
+            gameSize.observe(viewLifecycleOwner) { gameSize ->
+                navigate(FragmentScreen.Configuration, FragmentScreen.Game, gameSize)
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         observeViewModel()
+
     }
 
     override fun onCreateView(
@@ -38,7 +43,7 @@ class ConfigurationFragment : Fragment() {
             )
 
             setContent {
-
+                ConfigurationLayout(viewModel)
             }
         }
     }

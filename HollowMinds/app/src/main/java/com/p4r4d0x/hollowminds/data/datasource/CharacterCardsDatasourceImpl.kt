@@ -30,10 +30,20 @@ class CharacterCardsDatasourceImpl : CharacterCardsDatasource {
         CharacterCardData("Zote", R.drawable.zote)
     )
 
-    override fun getCharacterCards(cardsNumber: Int): List<CharacterCardData> {
-        return dataList
+    override fun getCharacterCards(differentItems: Int): List<CharacterCardData> {
+
+        val cardList = dataList
             .sortedBy { Math.random() }
-            .takeIf { cardsNumber > 0 && it.size >= cardsNumber }
-            ?.subList(0, cardsNumber) ?: emptyList()
+            .takeIf { differentItems > 0 && it.size >= differentItems  }
+            ?.subList(0, differentItems)
+
+        return cardList?.let{ data->
+            data.toMutableList().apply {
+                addAll(data)
+            }.sortedBy { Math.random() }
+        } ?: run{
+            emptyList()
+        }
+
     }
 }

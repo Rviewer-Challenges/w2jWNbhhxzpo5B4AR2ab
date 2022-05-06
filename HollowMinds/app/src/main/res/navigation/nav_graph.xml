@@ -3,7 +3,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/game_fragment">
+    app:startDestination="@+id/welcome_fragment">
 
     <fragment
         android:id="@+id/welcome_fragment"
@@ -25,10 +25,10 @@
             app:destination="@id/game_fragment"
             app:popUpTo="@+id/configuration_fragment"
             app:popUpToInclusive="true">
-           <!-- <argument
-                android:name="gameSize"
-                android:defaultValue="0"
-                app:argType="int" />-->
+            <argument
+                android:name="gameSizeValue"
+                android:defaultValue="FourXFour"
+                app:argType="com.p4r4d0x.hollowminds.domain.bo.GameSize" />
         </action>
     </fragment>
 
@@ -36,6 +36,10 @@
         android:id="@+id/game_fragment"
         android:name="com.p4r4d0x.hollowminds.presenter.game.view.GameFragment"
         android:label="Game">
+        <argument
+            android:name="gameSizeValue"
+            android:defaultValue="FourXFour"
+            app:argType="com.p4r4d0x.hollowminds.domain.bo.GameSize" />
         <action
             android:id="@+id/action_gameFragment_to_resultFragment"
             app:destination="@id/result_fragment"

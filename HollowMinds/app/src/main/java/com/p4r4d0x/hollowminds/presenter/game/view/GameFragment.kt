@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.p4r4d0x.hollowminds.R
 import com.p4r4d0x.hollowminds.presenter.game.viewmodel.GameViewModel
 import org.koin.android.ext.android.inject
@@ -20,10 +21,12 @@ class GameFragment : Fragment() {
         }
     }
 
+    private val args: GameFragmentArgs by navArgs()
+
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        viewModel.getCharacterCardsData(12)
+        viewModel.getCharacterCardsData(args.gameSizeValue.differentItems)
     }
 
     override fun onCreateView(
@@ -39,7 +42,7 @@ class GameFragment : Fragment() {
             )
 
             setContent {
-                GameLayout(viewModel)
+                GameLayout(viewModel,args.gameSizeValue.spanValue)
             }
         }
     }
