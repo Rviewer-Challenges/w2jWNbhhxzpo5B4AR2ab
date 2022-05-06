@@ -36,7 +36,6 @@ class WelcomeFragment : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-
             setContent {
 
             }

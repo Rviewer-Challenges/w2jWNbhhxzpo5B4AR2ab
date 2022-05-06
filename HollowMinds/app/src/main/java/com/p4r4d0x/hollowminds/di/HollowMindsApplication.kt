@@ -9,7 +9,7 @@ class HollowMindsApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@HollowMindsApplication)
-            modules(vmModule)
+            modules(viewmodelModule, usecasesModules, repositoriesModule, datasourcesModule)
         }
     }
 }

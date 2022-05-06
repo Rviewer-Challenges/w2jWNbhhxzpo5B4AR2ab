@@ -23,6 +23,7 @@ class GameFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         observeViewModel()
+        viewModel.getCharacterCardsData(12)
     }
 
     override fun onCreateView(
@@ -38,7 +39,7 @@ class GameFragment : Fragment() {
             )
 
             setContent {
-
+                GameLayout(viewModel)
             }
         }
     }
