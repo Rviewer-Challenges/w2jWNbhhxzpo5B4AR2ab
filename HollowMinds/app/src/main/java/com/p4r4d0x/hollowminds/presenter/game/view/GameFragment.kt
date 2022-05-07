@@ -18,19 +18,7 @@ class GameFragment : Fragment() {
 
     private val viewModel: GameViewModel by inject()
 
-    private fun observeViewModel() {
-        with(viewModel) {
-
-        }
-    }
-
     private val args: GameFragmentArgs by navArgs()
-
-    override fun onResume() {
-        super.onResume()
-        observeViewModel()
-        viewModel.getCharacterCardsData(args.gameSizeValue.differentItems)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,9 +34,33 @@ class GameFragment : Fragment() {
 
             setContent {
                 HollowMindsTheme {
-                    GameLayout(viewModel, args.gameSizeValue.spanValue){
-                       navigate(FragmentScreen.Game,FragmentScreen.Configuration)
+                    GameLayout(viewModel, args.gameSizeValue.spanValue) {
+                        navigate(FragmentScreen.Game, FragmentScreen.Configuration)
                     }
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observeViewModel()
+        viewModel.getCharacterCardsData(args.gameSizeValue.differentItems)
+    }
+
+    private fun observeViewModel() {
+        with(viewModel) {
+            charactersLoaded.observe(viewLifecycleOwner) {
+                startTimer()
+            }
+            timerFinished.observe(viewLifecycleOwner) { timerFinished ->
+                if (timerFinished) {
+                    navigate(
+                        from = FragmentScreen.Game,
+                        to = FragmentScreen.Result,
+                        wonGame = false,
+                        matchNumber = 0
+                    )
                 }
             }
         }

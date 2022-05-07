@@ -27,8 +27,8 @@ fun WelcomeLayout(onContinue: () -> Unit) {
         Image(
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.publiclight_background_),
-            contentDescription = ""
+            painter = painterResource(id = R.drawable.welcome_background),
+            contentDescription = "Welcome background"
         )
         Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             HollowText(
@@ -44,7 +44,7 @@ fun WelcomeLayout(onContinue: () -> Unit) {
                     .width(200.dp)
                     .height(50.dp)
                     ,
-                textResource = R.string.btn_game_4_4
+                textResource = R.string.btn_continue
             ) {
                 onContinue.invoke()
             }

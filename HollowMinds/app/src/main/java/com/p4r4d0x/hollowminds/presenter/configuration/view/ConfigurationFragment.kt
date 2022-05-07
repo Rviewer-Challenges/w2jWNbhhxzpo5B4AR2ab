@@ -17,20 +17,6 @@ class ConfigurationFragment : Fragment() {
 
     private val viewModel: ConfigurationViewModel by inject()
 
-    private fun observeViewModel() {
-        with(viewModel) {
-            gameSize.observe(viewLifecycleOwner) { gameSize ->
-                navigate(FragmentScreen.Configuration, FragmentScreen.Game, gameSize)
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        observeViewModel()
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,4 +35,19 @@ class ConfigurationFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        observeViewModel()
+
+    }
+
+    private fun observeViewModel() {
+        with(viewModel) {
+            gameSize.observe(viewLifecycleOwner) { gameSize ->
+                navigate(FragmentScreen.Configuration, FragmentScreen.Game, gameSize)
+            }
+        }
+    }
+
 }

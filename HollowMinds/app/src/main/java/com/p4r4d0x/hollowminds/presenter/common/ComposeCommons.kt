@@ -1,7 +1,10 @@
 package com.p4r4d0x.hollowminds.presenter.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,11 +36,21 @@ fun HollowButton(
 @Composable
 fun HollowText(
     modifier: Modifier = Modifier,
-    textResource: Int
+    textResource: Int,
+    auxStringValue: Int? = null
 ) {
-    Box(modifier = modifier.clip(MaterialTheme.shapes.small).background(MaterialTheme.colors.surface).padding(20.dp) ){
+    Box(
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
+            .background(MaterialTheme.colors.surface)
+            .padding(20.dp)
+    ) {
         Text(
-            text = stringResource(id = textResource),
+            text = auxStringValue?.let {
+                stringResource(id = textResource, it)
+            } ?: run {
+                stringResource(id = textResource)
+            },
             fontSize = 16.sp,
             fontWeight = FontWeight.Light,
             style = MaterialTheme.typography.body1,
@@ -47,11 +60,11 @@ fun HollowText(
 }
 
 @Composable
-fun HorizontalHollowDivider(){
-    Divider(Modifier.height(5.dp),color = Color.Transparent)
+fun HorizontalHollowDivider() {
+    Divider(Modifier.height(5.dp), color = Color.Transparent)
 }
 
 @Composable
-fun VerticalHollowDivider(){
-    Divider(Modifier.width(10.dp),color = Color.Transparent)
+fun VerticalHollowDivider() {
+    Divider(Modifier.width(10.dp), color = Color.Transparent)
 }

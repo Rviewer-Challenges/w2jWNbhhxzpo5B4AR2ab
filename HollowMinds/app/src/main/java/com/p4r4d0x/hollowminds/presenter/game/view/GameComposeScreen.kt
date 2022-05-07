@@ -10,6 +10,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +28,19 @@ import com.p4r4d0x.hollowminds.presenter.game.viewmodel.GameViewModel
 @Composable
 fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
 
+    val time = viewModel.time.observeAsState()
+
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Image(
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.rock_background_),
-            contentDescription = ""
+            painter = painterResource(id = R.drawable.game_background),
+            contentDescription = "Game background"
         )
+        Text(modifier = Modifier.align(Alignment.TopEnd), color = Color.White, text = time.value?:"00:00")
 
         GameGrid(viewModel, spanValue, Modifier.align(Alignment.Center))
         Row(
@@ -77,7 +82,7 @@ fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modi
                             .width(50.dp)
                             .height(50.dp),
                         painter = painterResource(id = item.characterImage),
-                        contentDescription = ""
+                        contentDescription = "Character ${item.characterName} image "
                     )
                     Text(
                         text = item.characterName,

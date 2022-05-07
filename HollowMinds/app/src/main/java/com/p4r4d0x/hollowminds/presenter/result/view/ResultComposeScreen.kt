@@ -1,4 +1,4 @@
-package com.p4r4d0x.hollowminds.presenter.configuration.view
+package com.p4r4d0x.hollowminds.presenter.result.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -10,16 +10,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.p4r4d0x.hollowminds.R
-import com.p4r4d0x.hollowminds.domain.bo.GameSize
 import com.p4r4d0x.hollowminds.presenter.common.HollowButton
 import com.p4r4d0x.hollowminds.presenter.common.HollowText
 import com.p4r4d0x.hollowminds.presenter.common.HorizontalHollowDivider
-import com.p4r4d0x.hollowminds.presenter.configuration.viewmodel.ConfigurationViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
+fun ResultLayout(wonGame: Boolean, matchNumber: Int, onRetry: () -> Unit, onExit: () -> Unit) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -27,8 +25,8 @@ fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
         Image(
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.configuration_background),
-            contentDescription = "Configuration background"
+            painter = painterResource(id = R.drawable.result_background),
+            contentDescription = "Result background"
         )
 
         Column(
@@ -38,7 +36,14 @@ fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
             HollowText(
                 modifier = Modifier
                     .width(300.dp)
-                    .height(60.dp), textResource = R.string.configuration_description
+                    .height(100.dp),
+                textResource = if (wonGame) {
+                    R.string.result_win
+                } else {
+                    R.string.result_lose
+                },
+                auxStringValue = matchNumber
+
             )
             HorizontalHollowDivider()
             HorizontalHollowDivider()
@@ -46,27 +51,18 @@ fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp),
-                textResource = R.string.btn_game_4_4
+                textResource = R.string.btn_retry
             ) {
-                viewModel.selectGameSize(GameSize.FourXFour)
+                onRetry()
             }
             HorizontalHollowDivider()
             HollowButton(
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp),
-                textResource = R.string.btn_game_4_5
+                textResource = R.string.btn_exit
             ) {
-                viewModel.selectGameSize(GameSize.FourXFive)
-            }
-            HorizontalHollowDivider()
-            HollowButton(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
-                textResource = R.string.btn_game_5_6
-            ) {
-                viewModel.selectGameSize(GameSize.FiveXSix)
+                onExit()
             }
         }
 

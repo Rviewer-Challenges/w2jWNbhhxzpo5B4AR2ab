@@ -6,24 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.p4r4d0x.hollowminds.R
-import com.p4r4d0x.hollowminds.presenter.result.viewmodel.ResultViewModel
-import org.koin.android.ext.android.inject
+import com.p4r4d0x.hollowminds.presenter.FragmentScreen
+import com.p4r4d0x.hollowminds.presenter.game.view.GameFragmentArgs
+import com.p4r4d0x.hollowminds.presenter.navigate
+import com.p4r4d0x.hollowminds.theme.HollowMindsTheme
 
 class ResultFragment : Fragment() {
 
-    private val viewModel: ResultViewModel by inject()
-
-    private fun observeViewModel() {
-        with(viewModel) {
-
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        observeViewModel()
-    }
+    private val args: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,9 +28,18 @@ class ResultFragment : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-
             setContent {
-
+                HollowMindsTheme {
+                    ResultLayout(
+                        args.wonGame,
+                        args.matchNumber,
+                        onExit = {
+                            activity?.finish()
+                        },
+                        onRetry = {
+                            navigate(FragmentScreen.Result, FragmentScreen.Configuration)
+                        })
+                }
             }
         }
     }
