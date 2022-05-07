@@ -1,16 +1,19 @@
 package com.p4r4d0x.hollowminds.presenter.configuration.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.p4r4d0x.hollowminds.R
 import com.p4r4d0x.hollowminds.domain.bo.GameSize
+import com.p4r4d0x.hollowminds.presenter.common.HollowButton
+import com.p4r4d0x.hollowminds.presenter.common.HollowText
+import com.p4r4d0x.hollowminds.presenter.common.HorizontalHollowDivider
 import com.p4r4d0x.hollowminds.presenter.configuration.viewmodel.ConfigurationViewModel
 
 
@@ -18,34 +21,56 @@ import com.p4r4d0x.hollowminds.presenter.configuration.viewmodel.ConfigurationVi
 @Composable
 fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
 
-    Row(modifier = Modifier.fillMaxHeight(),verticalAlignment = Alignment.CenterVertically) {
-        Column(modifier = Modifier.fillMaxWidth(),horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(40.dp),
-                onClick = { viewModel.selectGameSize(GameSize.FourXFour) }
-            ) {
-                Text(text = stringResource(id = R.string.btn_game_4_4))
-            }
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Image(
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.wood_bench_),
+            contentDescription = ""
+        )
 
-            Button(
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HollowText(
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(40.dp),
-                onClick = { viewModel.selectGameSize(GameSize.FourXFive) }
+                    .width(300.dp)
+                    .height(60.dp), textResource = R.string.configuration_description
+            )
+            HorizontalHollowDivider()
+            HorizontalHollowDivider()
+            HollowButton(
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(50.dp),
+                textResource = R.string.btn_game_4_4
             ) {
-                Text(text = stringResource(id = R.string.btn_game_4_5))
+                viewModel.selectGameSize(GameSize.FourXFour)
             }
-
-            Button(
+            HorizontalHollowDivider()
+            HollowButton(
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(40.dp),
-                onClick = { viewModel.selectGameSize(GameSize.FiveXSix) }
+                    .width(200.dp)
+                    .height(50.dp),
+                textResource = R.string.btn_game_4_5
             ) {
-                Text(text = stringResource(id = R.string.btn_game_5_6))
+                viewModel.selectGameSize(GameSize.FourXFive)
+            }
+            HorizontalHollowDivider()
+            HollowButton(
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(50.dp),
+                textResource = R.string.btn_game_5_6
+            ) {
+                viewModel.selectGameSize(GameSize.FiveXSix)
             }
         }
+
     }
+
+
 }

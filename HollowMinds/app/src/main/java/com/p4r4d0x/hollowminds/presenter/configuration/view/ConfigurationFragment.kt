@@ -10,6 +10,7 @@ import com.p4r4d0x.hollowminds.R
 import com.p4r4d0x.hollowminds.presenter.FragmentScreen
 import com.p4r4d0x.hollowminds.presenter.configuration.viewmodel.ConfigurationViewModel
 import com.p4r4d0x.hollowminds.presenter.navigate
+import com.p4r4d0x.hollowminds.theme.HollowMindsTheme
 import org.koin.android.ext.android.inject
 
 class ConfigurationFragment : Fragment() {
@@ -41,9 +42,10 @@ class ConfigurationFragment : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-
             setContent {
-                ConfigurationLayout(viewModel)
+                HollowMindsTheme {
+                    ConfigurationLayout(viewModel)
+                }
             }
         }
     }

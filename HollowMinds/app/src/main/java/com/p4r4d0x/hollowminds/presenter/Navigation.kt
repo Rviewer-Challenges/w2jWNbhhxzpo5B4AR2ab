@@ -34,6 +34,8 @@ fun Fragment.navigate(from: FragmentScreen,to: FragmentScreen,gameSize: GameSize
         FragmentScreen.Game -> {
             when (to) {
                 FragmentScreen.Result -> navController.navigate(R.id.action_gameFragment_to_resultFragment)
+                FragmentScreen.Configuration -> navController.navigate(R.id.action_gameFragment_to_configurationFragment)
+
                 else -> {}
             }
         }

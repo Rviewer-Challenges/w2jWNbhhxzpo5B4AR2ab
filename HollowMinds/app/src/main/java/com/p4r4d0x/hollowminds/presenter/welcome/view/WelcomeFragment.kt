@@ -11,6 +11,7 @@ import com.p4r4d0x.hollowminds.domain.bo.GameSize
 import com.p4r4d0x.hollowminds.presenter.FragmentScreen
 import com.p4r4d0x.hollowminds.presenter.navigate
 import com.p4r4d0x.hollowminds.presenter.welcome.viewmodel.WelcomeViewModel
+import com.p4r4d0x.hollowminds.theme.HollowMindsTheme
 import org.koin.android.ext.android.inject
 
 class WelcomeFragment : Fragment() {
@@ -26,7 +27,6 @@ class WelcomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        navigate(FragmentScreen.Welcome, FragmentScreen.Configuration)
 
     }
 
@@ -42,7 +42,11 @@ class WelcomeFragment : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setContent {
-
+                HollowMindsTheme {
+                    WelcomeLayout{
+                        navigate(FragmentScreen.Welcome, FragmentScreen.Configuration)
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Hollow Minds</string>
+
+    <string name="lorem_ipsum" translatable="false">Bienvenido al mundo de juegos mentales de Hallownest.\n\nPodrás elegir el tablero de juego y emparejar a los peronajes mas ilustres de Hollow Knight.\n\nDisfruta del viaje.</string>
+
+    <string name="configuration_description"> Selecciona el tamaño del tablero </string>
+    <string name="btn_game_reset" translatable="false">Reset game</string>
     <string name="btn_game_4_4" translatable="false">4 x 4</string>
     <string name="btn_game_4_5" translatable="false">4 x 5</string>
     <string name="btn_game_5_6" translatable="false">5 x 6</string>

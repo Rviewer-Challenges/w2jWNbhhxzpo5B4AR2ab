@@ -8,7 +8,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.p4r4d0x.hollowminds.R
+import com.p4r4d0x.hollowminds.presenter.FragmentScreen
 import com.p4r4d0x.hollowminds.presenter.game.viewmodel.GameViewModel
+import com.p4r4d0x.hollowminds.presenter.navigate
+import com.p4r4d0x.hollowminds.theme.HollowMindsTheme
 import org.koin.android.ext.android.inject
 
 class GameFragment : Fragment() {
@@ -42,7 +45,11 @@ class GameFragment : Fragment() {
             )
 
             setContent {
-                GameLayout(viewModel,args.gameSizeValue.spanValue)
+                HollowMindsTheme {
+                    GameLayout(viewModel, args.gameSizeValue.spanValue){
+                       navigate(FragmentScreen.Game,FragmentScreen.Configuration)
+                    }
+                }
             }
         }
     }

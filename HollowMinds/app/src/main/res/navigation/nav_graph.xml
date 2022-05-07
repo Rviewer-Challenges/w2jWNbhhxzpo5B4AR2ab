@@ -45,6 +45,11 @@
             app:destination="@id/result_fragment"
             app:popUpTo="@+id/game_fragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_gameFragment_to_configurationFragment"
+            app:destination="@id/configuration_fragment"
+            app:popUpTo="@+id/game_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
