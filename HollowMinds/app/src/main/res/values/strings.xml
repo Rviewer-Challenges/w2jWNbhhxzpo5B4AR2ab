@@ -4,7 +4,7 @@
     <string name="lorem_ipsum" translatable="false">Bienvenido al mundo de juegos mentales de Hallownest.\n\nPodrás elegir el tablero de juego y emparejar a los peronajes mas ilustres de Hollow Knight.\n\nDisfruta del viaje.</string>
 
     <string name="configuration_description"> Selecciona el tamaño del tablero </string>
-    <string name="result_lose">¡Oops!, se acabó el tiempo y no has conseguido encontrar todas las parejas. Has encontrado %d.</string>
+    <string name="result_lose">¡Oops!, se acabó el tiempo y no has conseguido encontrar todas las parejas. Has encontrado %d de %d.</string>
     <string name="result_win">¡Lo conseguiste! Has encontrado las %d parejas.</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_game_reset" >Reset game</string>

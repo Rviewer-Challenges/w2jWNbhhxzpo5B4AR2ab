@@ -33,6 +33,7 @@ class ResultFragment : Fragment() {
                     ResultLayout(
                         args.wonGame,
                         args.matchNumber,
+                        args.totalPairs,
                         onExit = {
                             activity?.finish()
                         },

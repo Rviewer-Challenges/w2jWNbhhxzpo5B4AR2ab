@@ -37,7 +37,9 @@ fun HollowButton(
 fun HollowText(
     modifier: Modifier = Modifier,
     textResource: Int,
-    auxStringValue: Int? = null
+    auxStringValue: Int? = null,
+    auxStringValue2: Int? = null
+
 ) {
     Box(
         modifier = modifier
@@ -46,8 +48,13 @@ fun HollowText(
             .padding(20.dp)
     ) {
         Text(
-            text = auxStringValue?.let {
-                stringResource(id = textResource, it)
+            text = auxStringValue?.let { fValue ->
+                auxStringValue2?.let { sValue ->
+                    stringResource(id = textResource, fValue, sValue)
+                } ?: run {
+                    stringResource(id = textResource)
+                }
+
             } ?: run {
                 stringResource(id = textResource)
             },

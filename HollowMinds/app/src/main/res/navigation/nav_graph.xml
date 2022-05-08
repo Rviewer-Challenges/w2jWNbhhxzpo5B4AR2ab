@@ -49,9 +49,12 @@
                 android:name="wonGame"
                 android:defaultValue="false"
                 app:argType="boolean" />
-
             <argument
                 android:name="matchNumber"
+                android:defaultValue="0"
+                app:argType="integer" />
+            <argument
+                android:name="totalPairs"
                 android:defaultValue="0"
                 app:argType="integer" />
         </action>
@@ -66,17 +69,18 @@
         android:id="@+id/result_fragment"
         android:name="com.p4r4d0x.hollowminds.presenter.result.view.ResultFragment"
         android:label="Result">
-
         <argument
             android:name="wonGame"
             android:defaultValue="false"
             app:argType="boolean" />
-
         <argument
             android:name="matchNumber"
             android:defaultValue="0"
             app:argType="integer" />
-
+        <argument
+            android:name="totalPairs"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_resultFragment_to_configurationFragment"
             app:destination="@id/configuration_fragment"

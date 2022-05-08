@@ -59,7 +59,19 @@ class GameFragment : Fragment() {
                         from = FragmentScreen.Game,
                         to = FragmentScreen.Result,
                         wonGame = false,
-                        matchNumber = 0
+                        matchNumber = pairsMatched.value?:0,
+                        totalPairs = totalPairs.value?:0
+                    )
+                }
+            }
+            wonGame.observe(viewLifecycleOwner){ wonGame->
+                if(wonGame){
+                    navigate(
+                        from = FragmentScreen.Game,
+                        to = FragmentScreen.Result,
+                        wonGame = true,
+                        matchNumber = pairsMatched.value?:0,
+                        totalPairs = totalPairs.value?:0
                     )
                 }
             }

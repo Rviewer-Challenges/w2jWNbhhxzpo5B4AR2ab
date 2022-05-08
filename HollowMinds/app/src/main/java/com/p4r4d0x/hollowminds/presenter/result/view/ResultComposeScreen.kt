@@ -14,10 +14,9 @@ import com.p4r4d0x.hollowminds.presenter.common.HollowButton
 import com.p4r4d0x.hollowminds.presenter.common.HollowText
 import com.p4r4d0x.hollowminds.presenter.common.HorizontalHollowDivider
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ResultLayout(wonGame: Boolean, matchNumber: Int, onRetry: () -> Unit, onExit: () -> Unit) {
+fun ResultLayout(wonGame: Boolean, matchNumber: Int, totalNumber: Int,onRetry: () -> Unit, onExit: () -> Unit) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -42,7 +41,8 @@ fun ResultLayout(wonGame: Boolean, matchNumber: Int, onRetry: () -> Unit, onExit
                 } else {
                     R.string.result_lose
                 },
-                auxStringValue = matchNumber
+                auxStringValue = matchNumber,
+                auxStringValue2 = totalNumber
 
             )
             HorizontalHollowDivider()

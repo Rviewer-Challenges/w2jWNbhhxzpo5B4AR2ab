@@ -15,7 +15,8 @@ fun Fragment.navigate(
     to: FragmentScreen,
     gameSize: GameSize = GameSize.FourXFive,
     wonGame: Boolean = false,
-    matchNumber: Int = 0
+    matchNumber: Int = 0,
+    totalPairs: Int = 0
 
 ) {
     val navController = findNavController()
@@ -47,6 +48,7 @@ fun Fragment.navigate(
                     val action =
                         GameFragmentDirections.actionGameFragmentToResultFragment()
                             .setMatchNumber(matchNumber)
+                            .setTotalPairs(totalPairs)
                             .setWonGame(wonGame)
                     navController.navigate(action)
                 }

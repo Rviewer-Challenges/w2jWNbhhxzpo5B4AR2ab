@@ -117,9 +117,12 @@ fun GameCard(viewModel: GameViewModel,index:Int,item: CharacterCardData) {
                     cameraDistance = 8 * density
                 }
                 .clickable {
-                    if(!item.matched && !item.selected/* && !rotated*/){
-                        viewModel.setItemSelected(index)
-                        viewModel.itemRevealed(index)
+                    if(!item.matched && !item.selected){
+                        with(viewModel){
+                            setItemSelected(index)
+                            itemRevealed(index)
+                            checkGameStatus()
+                        }
                     }
                 },
             border = BorderStroke(0.05.dp,MaterialTheme.colors.onSecondary),
