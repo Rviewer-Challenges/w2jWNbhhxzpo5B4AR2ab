@@ -70,35 +70,36 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modifier) {
-    val data: List<CharacterCardData> = viewModel.characterCardsData.collectAsState().value
+
+    val data = viewModel.characterCardsData.observeAsState()
     LazyVerticalGrid(
         modifier = modifier,
         cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {
-        itemsIndexed(items = data) { _, item ->
-            GameCard(item)
+        itemsIndexed(items = data.value?.values?.toList()?: emptyList()) { index, item ->
+            GameCard(viewModel,index,item)
         }
     }
 }
 
 @Composable
-fun GameCard(item: CharacterCardData) {
+fun GameCard(viewModel: GameViewModel,index:Int,item: CharacterCardData) {
 
-    var rotated by remember { mutableStateOf(false) }
+//    var rotated by remember { mutableStateOf(item.selected) }
 
     val rotation by animateFloatAsState(
-        targetValue = if (rotated) 180f else 0f,
+        targetValue = if (item.selected) 180f else 0f,
         animationSpec = tween(500)
     )
 
     val animateFront by animateFloatAsState(
-        targetValue = if (!rotated) 1f else 0f,
+        targetValue = if (!item.selected) 1f else 0f,
         animationSpec = tween(500)
     )
 
     val animateBack by animateFloatAsState(
-        targetValue = if (rotated) 1f else 0f,
+        targetValue = if (item.selected) 1f else 0f,
         animationSpec = tween(500)
     )
 
@@ -116,15 +117,18 @@ fun GameCard(item: CharacterCardData) {
                     cameraDistance = 8 * density
                 }
                 .clickable {
-                    rotated = !rotated
+                    if(!item.matched && !item.selected/* && !rotated*/){
+                        viewModel.setItemSelected(index)
+                        viewModel.itemRevealed(index)
+                    }
                 },
             border = BorderStroke(0.05.dp,MaterialTheme.colors.onSecondary),
             backgroundColor = GreyLightTransparent
         ) {
-            if (rotated) {
-                CharacterCardSide(item, rotated, rotation, animateBack, animateFront)
+            if (item.selected || item.matched) {
+                CharacterCardSide(item, item.selected, rotation, animateBack, animateFront)
             } else {
-                BackCardSide(rotated, rotation, animateBack, animateFront)
+                BackCardSide(item.selected, rotation, animateBack, animateFront)
             }
         }
     }

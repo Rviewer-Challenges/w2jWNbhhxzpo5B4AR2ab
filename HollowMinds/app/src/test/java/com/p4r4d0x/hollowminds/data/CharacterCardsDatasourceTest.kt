@@ -46,7 +46,7 @@ class CharacterCardsDatasourceTest : KoinBaseTest(testRepositoriesModule, testDa
 
     @Test
     fun `test get character cards invalid value too big`() {
-        val obtainedCards = datasource.getCharacterCards(20)
+        val obtainedCards = datasource.getCharacterCards(30)
 
         Assertions.assertEquals(0, obtainedCards.size)
     }
