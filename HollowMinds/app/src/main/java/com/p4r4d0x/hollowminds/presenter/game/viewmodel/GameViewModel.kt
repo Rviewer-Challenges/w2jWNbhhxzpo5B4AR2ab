@@ -13,7 +13,7 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
 
     companion object {
         //time to countdown - 1hr - 60secs
-        const val TIME_COUNTDOWN = 10000L
+        const val TIME_COUNTDOWN = 60000L
         const val COUNTDOWN_INTERVAL = 1000L
         private const val TIME_FORMAT = "%02d:%02d"
     }

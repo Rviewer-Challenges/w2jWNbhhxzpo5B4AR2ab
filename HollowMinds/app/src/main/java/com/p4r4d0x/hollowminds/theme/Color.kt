@@ -9,6 +9,8 @@ val GreyDark = Color(0xFF000a12)
 val GreyDarkTransparent = Color(0x30000a12)
 
 val GreyLight = Color(0xFF4f5b62)
+val GreyLightTransparent = Color(0x60cfd8dc)
+
 val GreyLightLight = Color(0xFFcfd8dc)
 val Red = Color(0xFFa30000)
 
