@@ -13,7 +13,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +36,8 @@ import com.p4r4d0x.hollowminds.theme.GreyLightTransparent
 @Composable
 fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
     val time = viewModel.time.observeAsState()
-
+    val pairsMatched = viewModel.pairsMatched.observeAsState()
+    val totalPairs = viewModel.totalPairs.observeAsState()
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -44,11 +47,57 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
             painter = painterResource(id = R.drawable.game_background),
             contentDescription = "Game background"
         )
-        Text(
-            modifier = Modifier.align(Alignment.TopEnd),
-            color = Color.White,
-            text = time.value ?: "00:00"
-        )
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .align(Alignment.TopCenter)
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Column(
+                Modifier.fillMaxWidth(0.5F),
+                horizontalAlignment = CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier,
+                    style = MaterialTheme.typography.h5,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    text = stringResource(id = R.string.game_remaining_time)
+                )
+                Text(
+                    modifier = Modifier,
+                    style = MaterialTheme.typography.h3,
+                    color = Color.White,
+                    text = time.value ?: "00:00"
+                )
+            }
+
+            if (viewModel.charactersLoaded.value == true) {
+                Column(
+                    Modifier.fillMaxWidth(1F),
+                    horizontalAlignment = CenterHorizontally
+                )  {
+                    Text(
+                        modifier = Modifier,
+                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.h5,
+                        color = Color.White,
+                        text = stringResource(id = R.string.game_pairs_unlocked)
+                    )
+                    Text(
+                        modifier = Modifier,
+                        style = MaterialTheme.typography.h3,
+                        color = Color.White,
+                        text = "${pairsMatched.value}/${totalPairs.value}"
+                    )
+                }
+            }
+
+        }
 
         GameGrid(viewModel, spanValue, Modifier.align(Alignment.Center))
         Row(
@@ -77,16 +126,14 @@ fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modi
         cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {
-        itemsIndexed(items = data.value?.values?.toList()?: emptyList()) { index, item ->
-            GameCard(viewModel,index,item)
+        itemsIndexed(items = data.value?.values?.toList() ?: emptyList()) { index, item ->
+            GameCard(viewModel, index, item)
         }
     }
 }
 
 @Composable
-fun GameCard(viewModel: GameViewModel,index:Int,item: CharacterCardData) {
-
-//    var rotated by remember { mutableStateOf(item.selected) }
+fun GameCard(viewModel: GameViewModel, index: Int, item: CharacterCardData) {
 
     val rotation by animateFloatAsState(
         targetValue = if (item.selected) 180f else 0f,
@@ -117,15 +164,15 @@ fun GameCard(viewModel: GameViewModel,index:Int,item: CharacterCardData) {
                     cameraDistance = 8 * density
                 }
                 .clickable {
-                    if(!item.matched && !item.selected){
-                        with(viewModel){
+                    if (!item.matched && !item.selected) {
+                        with(viewModel) {
                             setItemSelected(index)
                             itemRevealed(index)
                             checkGameStatus()
                         }
                     }
                 },
-            border = BorderStroke(0.05.dp,MaterialTheme.colors.onSecondary),
+            border = BorderStroke(0.05.dp, MaterialTheme.colors.onSecondary),
             backgroundColor = GreyLightTransparent
         ) {
             if (item.selected || item.matched) {

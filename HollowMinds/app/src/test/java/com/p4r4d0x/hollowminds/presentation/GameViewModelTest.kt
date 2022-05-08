@@ -55,30 +55,46 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
     }
 
     @Test
+    fun `test check game status game lose`() {
+        invokeGetCharacterCardsData()
+
+        viewModelSUT.checkGameStatus()
+
+
+        Assert.assertEquals(0, viewModelSUT.pairsMatched.getOrAwaitValue())
+        Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertFalse(viewModelSUT.wonGame.getOrAwaitValue())
+    }
+
+    @Test
+    fun `test check game status game won`() {
+        invokeGetCharacterCardsData()
+
+        viewModelSUT.itemRevealed(0)
+        viewModelSUT.itemRevealed(2)
+        viewModelSUT.checkGameStatus()
+        Assert.assertEquals(1, viewModelSUT.pairsMatched.getOrAwaitValue())
+        Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertFalse(viewModelSUT.wonGame.getOrAwaitValue())
+
+
+        viewModelSUT.itemRevealed(1)
+        viewModelSUT.itemRevealed(3)
+        viewModelSUT.checkGameStatus()
+        Assert.assertEquals(2, viewModelSUT.pairsMatched.getOrAwaitValue())
+        Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertTrue(viewModelSUT.wonGame.getOrAwaitValue())
+    }
+
+    @Test
     fun `test get character cards data`() {
         invokeGetCharacterCardsData()
 
-        viewModelSUT.getCharacterCardsData(2)
-
         val obtainedData = viewModelSUT.characterCardsData.value
+
         Assert.assertEquals(cardMap, obtainedData)
-    }
-
-    @Test
-    fun `test start timer`() {
-        viewModelSUT.startTimer()
-
-        Assert.assertFalse(viewModelSUT.timerFinished.getOrAwaitValue())
-    }
-
-    @Test
-    fun `test set item selected`() {
-        invokeGetCharacterCardsData()
-
-        viewModelSUT.setItemSelected(0)
-
-        cardMap[0]?.let { cardMap[0] = it.copy(selected = true) }
-        Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
+        Assert.assertEquals(0, viewModelSUT.pairsMatched.getOrAwaitValue())
+        Assert.assertEquals(obtainedData!!.size / 2, viewModelSUT.totalPairs.getOrAwaitValue())
     }
 
     @Test
@@ -100,6 +116,23 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         viewModelSUT.itemRevealed(0)
         viewModelSUT.itemRevealed(1)
 
+        Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
+    }
+
+    @Test
+    fun `test start timer`() {
+        viewModelSUT.startTimer()
+
+        Assert.assertFalse(viewModelSUT.timerFinished.getOrAwaitValue())
+    }
+
+    @Test
+    fun `test set item selected`() {
+        invokeGetCharacterCardsData()
+
+        viewModelSUT.setItemSelected(0)
+
+        cardMap[0]?.let { cardMap[0] = it.copy(selected = true) }
         Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
     }
 

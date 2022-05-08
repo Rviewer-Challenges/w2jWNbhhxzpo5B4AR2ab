@@ -1,19 +1,20 @@
 <resources>
-    <string name="app_name">Hollow Minds</string>
-
-    <string name="lorem_ipsum" translatable="false">Bienvenido al mundo de juegos mentales de Hallownest.\n\nPodrás elegir el tablero de juego y emparejar a los peronajes mas ilustres de Hollow Knight.\n\nDisfruta del viaje.</string>
-
-    <string name="configuration_description"> Selecciona el tamaño del tablero </string>
-    <string name="result_lose">¡Oops!, se acabó el tiempo y no has conseguido encontrar todas las parejas. Has encontrado %d de %d.</string>
-    <string name="result_win">¡Lo conseguiste! Has encontrado las %d parejas.</string>
-    <string name="btn_continue">Continue</string>
-    <string name="btn_game_reset" >Reset game</string>
+    <string name="app_name" translatable="false">Hollow Minds</string>
     <string name="btn_game_4_4" translatable="false">4 x 4</string>
     <string name="btn_game_4_5" translatable="false">4 x 5</string>
     <string name="btn_game_5_6" translatable="false">5 x 6</string>
+
+    <string name="btn_continue">Continue</string>
+    <string name="btn_game_reset" >Reset game</string>
     <string name="btn_retry" >Retry</string>
     <string name="btn_exit">Exit</string>
 
+    <string name="welcome_description" >Welcome to the Hallownest mind games world.\n\nYou\'ll be able to pick a game board size and try to pair the iconic characters from Hollow Knight.\n\nEnjoy the journey.</string>
+    <string name="configuration_description">Select the board size</string>
+    <string name="game_remaining_time">Remaining time</string>
+    <string name="game_pairs_unlocked">Unlocked pairs</string>
+    <string name="result_lose">¡Oops!, you ran out of time and you couldn\'t find all the pairs. You found %d out of %d.</string>
+    <string name="result_win">¡You made it! You have found the %d pairs.</string>
 
 
 </resources>

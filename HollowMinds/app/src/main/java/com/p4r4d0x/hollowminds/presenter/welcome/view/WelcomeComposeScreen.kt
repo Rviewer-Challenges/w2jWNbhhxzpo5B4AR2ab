@@ -35,7 +35,7 @@ fun WelcomeLayout(onContinue: () -> Unit) {
                 modifier = Modifier
                     .width(300.dp)
                     .height(180.dp)
-                    , textResource = R.string.lorem_ipsum
+                    , textResource = R.string.welcome_description
             )
             HorizontalHollowDivider()
             HorizontalHollowDivider()

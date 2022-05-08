@@ -49,6 +49,18 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
     val wonGame: MutableLiveData<Boolean>
         get() = _wonGame
 
+
+    fun checkGameStatus(){
+        _characterCardsData.value?.let{ cardsData->
+            val pairsNumber = cardsData.filter { it.value.matched }.count()/2
+            val totalPairs = cardsData.count()/2
+            _pairsMatched.value = pairsNumber
+            _totalPairs.value = totalPairs
+            _wonGame.value = pairsNumber ==totalPairs
+
+        }
+    }
+
     fun getCharacterCardsData(cardsNumber: Int) {
         getCharacterCardsUseCase.invoke(
             viewModelScope,
@@ -56,7 +68,32 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
         ) { characterList ->
             _characterCardsData.value =
                 characterList.mapIndexed { index, data -> index to data }.toMap().toMutableMap()
+            _pairsMatched.value = 0
+            _totalPairs.value = characterList.size/2
             _charactersLoaded.value = true
+        }
+    }
+
+    fun itemRevealed(index: Int) {
+        if (firstSelectedCard == null) {
+            _characterCardsData.getFrom(index)?.let { characterCardData ->
+                firstSelectedCard = index to characterCardData
+            }
+        } else {
+            val secondSelectedCard = _characterCardsData.getFrom(index)
+            firstSelectedCard?.let { fsc ->
+                secondSelectedCard?.let { ssc ->
+                    if (fsc.second.characterName == ssc.characterName) {
+                        _characterCardsData.setMachValues(true,fsc.first, index)
+                    } else {
+                        viewModelScope.launch {
+                            delay(1000)
+                            _characterCardsData.setMachValues(false,fsc.first, index)
+                        }
+                    }
+                }
+            }
+            firstSelectedCard = null
         }
     }
 
@@ -82,40 +119,5 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
         }
     }
 
-    fun itemRevealed(index: Int) {
-        if (firstSelectedCard == null) {
-            _characterCardsData.getFrom(index)?.let { characterCardData ->
-                firstSelectedCard = index to characterCardData
-            }
-
-        } else {
-            val secondSelectedCard = _characterCardsData.getFrom(index)
-            firstSelectedCard?.let { fsc ->
-                secondSelectedCard?.let { ssc ->
-                    if (fsc.second.characterName == ssc.characterName) {
-                        _characterCardsData.setMachValues(true,fsc.first, index)
-                    } else {
-                        viewModelScope.launch {
-                            delay(1000)
-                            _characterCardsData.setMachValues(false,fsc.first, index)
-                        }
-                    }
-                }
-            }
-            firstSelectedCard = null
-
-        }
-    }
-
-    fun checkGameStatus(){
-        _characterCardsData.value?.let{ cardsData->
-            val pairsNumber = cardsData.filter { it.value.matched }.count()/2
-            val totalPairs = cardsData.count()/2
-            _pairsMatched.value = pairsNumber
-            _totalPairs.value = totalPairs
-            _wonGame.value = pairsNumber ==totalPairs
-
-        }
-    }
 
 }
