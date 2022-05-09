@@ -1,15 +1,17 @@
 package com.p4r4d0x.hollowminds.presenter.game.viewmodel
 
 import android.os.CountDownTimer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.p4r4d0x.hollowminds.domain.Utils.COUNTDOWN_INTERVAL
-import com.p4r4d0x.hollowminds.domain.Utils.TIME_COUNTDOWN
+import com.p4r4d0x.hollowminds.domain.Utils.MATCH_PROCESS_DURATION
+import com.p4r4d0x.hollowminds.domain.Utils.TIMER_COUNTDOWN
 import com.p4r4d0x.hollowminds.domain.Utils.formatTime
 import com.p4r4d0x.hollowminds.domain.bo.CharacterCardData
-import com.p4r4d0x.hollowminds.domain.getFrom
-import com.p4r4d0x.hollowminds.domain.setMachValues
 import com.p4r4d0x.hollowminds.domain.usecases.GetCharacterCardsUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,10 +22,7 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
 
     private var firstSelectedCard: Pair<Int, CharacterCardData>? = null
 
-    private val _characterCardsData =
-        MutableLiveData<MutableMap<Int, CharacterCardData>>(mutableMapOf())
-    val characterCardsData: MutableLiveData<MutableMap<Int, CharacterCardData>>
-        get() = _characterCardsData
+    var characterCardsData by mutableStateOf<List<CharacterCardData>>(listOf())
 
     private val _charactersLoaded = MutableLiveData<Boolean>()
     val charactersLoaded: MutableLiveData<Boolean>
@@ -32,6 +31,10 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
     private val _pairsMatched = MutableLiveData<Int>()
     val pairsMatched: MutableLiveData<Int>
         get() = _pairsMatched
+
+    private val _processingPair = MutableLiveData(false)
+    val processingPair: MutableLiveData<Boolean>
+        get() = _processingPair
 
     private val _totalPairs = MutableLiveData<Int>()
     val totalPairs: MutableLiveData<Int>
@@ -49,16 +52,12 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
     val wonGame: MutableLiveData<Boolean>
         get() = _wonGame
 
-
-    fun checkGameStatus(){
-        _characterCardsData.value?.let{ cardsData->
-            val pairsNumber = cardsData.filter { it.value.matched }.count()/2
-            val totalPairs = cardsData.count()/2
-            _pairsMatched.value = pairsNumber
-            _totalPairs.value = totalPairs
-            _wonGame.value = pairsNumber ==totalPairs
-
-        }
+    fun checkGameStatus() {
+        val pairsNumber = characterCardsData.filter { it.matched }.count() / 2
+        val totalPairs = characterCardsData.count() / 2
+        _pairsMatched.value = pairsNumber
+        _totalPairs.value = totalPairs
+        _wonGame.value = pairsNumber == totalPairs
     }
 
     fun getCharacterCardsData(cardsNumber: Int) {
@@ -66,29 +65,32 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
             viewModelScope,
             GetCharacterCardsUseCase.Params(cardsNumber)
         ) { characterList ->
-            _characterCardsData.value =
-                characterList.mapIndexed { index, data -> index to data }.toMap().toMutableMap()
+            characterCardsData = characterList
             _pairsMatched.value = 0
-            _totalPairs.value = characterList.size/2
+            _totalPairs.value = characterList.size / 2
             _charactersLoaded.value = true
         }
     }
 
     fun itemRevealed(index: Int) {
         if (firstSelectedCard == null) {
-            _characterCardsData.getFrom(index)?.let { characterCardData ->
+            characterCardsData[index].let { characterCardData ->
                 firstSelectedCard = index to characterCardData
             }
         } else {
-            val secondSelectedCard = _characterCardsData.getFrom(index)
+            val secondSelectedCard = characterCardsData[index]
             firstSelectedCard?.let { fsc ->
-                secondSelectedCard?.let { ssc ->
+                secondSelectedCard.let { ssc ->
                     if (fsc.second.characterName == ssc.characterName) {
-                        _characterCardsData.setMachValues(true,fsc.first, index)
+                        setItemInList(fsc.first, selected = true, matched = true)
+                        setItemInList(index, selected = true, matched = true)
                     } else {
                         viewModelScope.launch {
-                            delay(1000)
-                            _characterCardsData.setMachValues(false,fsc.first, index)
+                            _processingPair.value = true
+                            delay(MATCH_PROCESS_DURATION)
+                            setItemInList(fsc.first, selected = false, matched = false)
+                            setItemInList(index, selected = false, matched = false)
+                            _processingPair.value = false
                         }
                     }
                 }
@@ -99,7 +101,7 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
 
     fun startTimer() {
         _timerFinished.value = false
-        countDownTimer = object : CountDownTimer(TIME_COUNTDOWN, COUNTDOWN_INTERVAL) {
+        countDownTimer = object : CountDownTimer(TIMER_COUNTDOWN, COUNTDOWN_INTERVAL) {
             override fun onTick(millisRemaining: Long) {
                 _time.value = millisRemaining.formatTime()
             }
@@ -111,13 +113,12 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
         }.start()
     }
 
-    fun setItemSelected(index: Int) {
-        _characterCardsData.value?.let { map ->
-            map[index]?.let { cardData ->
-                map[index] = cardData.copy(selected = true)
-            }
-        }
+    fun setItemInList(index: Int, selected: Boolean, matched: Boolean) {
+        val tmpList = characterCardsData.toMutableList()
+        tmpList[index] = tmpList[index].copy(selected = selected, matched = matched)
+        characterCardsData = tmpList
     }
 
-
 }
+
+

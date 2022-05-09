@@ -42,13 +42,6 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         CharacterCardData(CHARACTER_2_NAME, 2)
     )
 
-    private val cardMap = mutableMapOf(
-        0 to CharacterCardData(CHARACTER_1_NAME, 1),
-        1 to CharacterCardData(CHARACTER_2_NAME, 2),
-        2 to CharacterCardData(CHARACTER_1_NAME, 1),
-        3 to CharacterCardData(CHARACTER_2_NAME, 2)
-    )
-
     @Before
     fun setUp() {
         viewModelSUT = GameViewModel(getCharacterCardsUseCase)
@@ -77,7 +70,6 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
         Assert.assertFalse(viewModelSUT.wonGame.getOrAwaitValue())
 
-
         viewModelSUT.itemRevealed(1)
         viewModelSUT.itemRevealed(3)
         viewModelSUT.checkGameStatus()
@@ -90,11 +82,11 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
     fun `test get character cards data`() {
         invokeGetCharacterCardsData()
 
-        val obtainedData = viewModelSUT.characterCardsData.value
+        val obtainedData = viewModelSUT.characterCardsData
 
-        Assert.assertEquals(cardMap, obtainedData)
+        Assert.assertEquals(cardData, obtainedData)
         Assert.assertEquals(0, viewModelSUT.pairsMatched.getOrAwaitValue())
-        Assert.assertEquals(obtainedData!!.size / 2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertEquals(obtainedData.size / 2, viewModelSUT.totalPairs.getOrAwaitValue())
     }
 
     @Test
@@ -104,9 +96,10 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         viewModelSUT.itemRevealed(0)
         viewModelSUT.itemRevealed(2)
 
-        cardMap[0]?.let { cardMap[0] = it.copy(matched = true, selected = true) }
-        cardMap[2]?.let { cardMap[2] = it.copy(matched = true, selected = true) }
-        Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
+        val expectedList = cardData.toMutableList()
+        expectedList[0] = expectedList[0].copy(matched = true, selected = true)
+        expectedList[2] = expectedList[2].copy(matched = true, selected = true)
+        Assert.assertEquals(expectedList, viewModelSUT.characterCardsData)
     }
 
     @Test
@@ -116,7 +109,7 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         viewModelSUT.itemRevealed(0)
         viewModelSUT.itemRevealed(1)
 
-        Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
+        Assert.assertEquals(cardData, viewModelSUT.characterCardsData)
     }
 
     @Test
@@ -130,10 +123,11 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
     fun `test set item selected`() {
         invokeGetCharacterCardsData()
 
-        viewModelSUT.setItemSelected(0)
+        viewModelSUT.setItemInList(0,selected = true,matched = false)
 
-        cardMap[0]?.let { cardMap[0] = it.copy(selected = true) }
-        Assert.assertEquals(cardMap, viewModelSUT.characterCardsData.value)
+        val expectedList = cardData.toMutableList()
+        expectedList[0] = expectedList[0].copy(matched = false, selected = true)
+        Assert.assertEquals(expectedList, viewModelSUT.characterCardsData)
     }
 
     private fun invokeGetCharacterCardsData() {

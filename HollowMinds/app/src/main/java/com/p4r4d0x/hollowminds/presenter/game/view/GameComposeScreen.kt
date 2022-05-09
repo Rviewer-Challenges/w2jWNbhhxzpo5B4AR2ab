@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.p4r4d0x.hollowminds.R
+import com.p4r4d0x.hollowminds.domain.Utils.ANIMATION_DURATION
 import com.p4r4d0x.hollowminds.domain.bo.CharacterCardData
 import com.p4r4d0x.hollowminds.presenter.common.HollowButton
 import com.p4r4d0x.hollowminds.presenter.game.viewmodel.GameViewModel
@@ -80,7 +81,7 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
                 Column(
                     Modifier.fillMaxWidth(1F),
                     horizontalAlignment = CenterHorizontally
-                )  {
+                ) {
                     Text(
                         modifier = Modifier,
                         fontSize = 16.sp,
@@ -120,13 +121,13 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
 @Composable
 fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modifier) {
 
-    val data = viewModel.characterCardsData.observeAsState()
+    val data = viewModel.characterCardsData
     LazyVerticalGrid(
         modifier = modifier,
         cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {
-        itemsIndexed(items = data.value?.values?.toList() ?: emptyList()) { index, item ->
+        itemsIndexed(items = data) { index, item ->
             GameCard(viewModel, index, item)
         }
     }
@@ -137,17 +138,17 @@ fun GameCard(viewModel: GameViewModel, index: Int, item: CharacterCardData) {
 
     val rotation by animateFloatAsState(
         targetValue = if (item.selected) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(ANIMATION_DURATION)
     )
 
     val animateFront by animateFloatAsState(
         targetValue = if (!item.selected) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(ANIMATION_DURATION)
     )
 
     val animateBack by animateFloatAsState(
         targetValue = if (item.selected) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(ANIMATION_DURATION)
     )
 
     Box(
@@ -164,9 +165,9 @@ fun GameCard(viewModel: GameViewModel, index: Int, item: CharacterCardData) {
                     cameraDistance = 8 * density
                 }
                 .clickable {
-                    if (!item.matched && !item.selected) {
+                    if (!item.matched && !item.selected && viewModel.processingPair.value == false) {
                         with(viewModel) {
-                            setItemSelected(index)
+                            setItemInList(index, selected = true, matched = false)
                             itemRevealed(index)
                             checkGameStatus()
                         }
