@@ -40,30 +40,20 @@ fun ConfigurationLayout(viewModel: ConfigurationViewModel) {
                     .width(300.dp)
                     .height(60.dp), textResource = R.string.configuration_description
             )
-            HorizontalHollowDivider()
-            HorizontalHollowDivider()
+            HorizontalHollowDivider(50)
             HollowButton(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
                 textResource = R.string.btn_game_4_4
             ) {
                 viewModel.selectGameSize(GameSize.FourXFour)
             }
-            HorizontalHollowDivider()
+            HorizontalHollowDivider(5)
             HollowButton(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
                 textResource = R.string.btn_game_4_5
             ) {
                 viewModel.selectGameSize(GameSize.FourXFive)
             }
-            HorizontalHollowDivider()
+            HorizontalHollowDivider(5)
             HollowButton(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp),
                 textResource = R.string.btn_game_5_6
             ) {
                 viewModel.selectGameSize(GameSize.FiveXSix)

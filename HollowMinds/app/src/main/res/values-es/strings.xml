@@ -9,6 +9,8 @@
     <string name="configuration_description"> Selecciona el tamaño del tablero </string>
     <string name="game_remaining_time">Tiempo restante</string>
     <string name="game_pairs_unlocked">Parejas descubiertas</string>
+    <string name="result_lose_title">Has perdido</string>
+    <string name="result_win_title">Has ganado</string>
     <string name="result_lose">¡Oops!, se acabó el tiempo y no has conseguido encontrar todas las parejas. Has encontrado %d de %d.</string>
     <string name="result_win">¡Lo conseguiste! Has encontrado las %d parejas.</string>
 </resources>

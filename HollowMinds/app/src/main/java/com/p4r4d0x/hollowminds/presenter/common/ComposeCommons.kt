@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun HollowButton(
-    modifier: Modifier = Modifier,
     textResource: Int,
     action: () -> Unit
 ) {
@@ -26,10 +25,17 @@ fun HollowButton(
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = MaterialTheme.colors.onSecondary
         ),
-        modifier = modifier,
+        modifier = Modifier
+            .width(200.dp)
+            .height(45.dp),
         onClick = { action.invoke() }
     ) {
-        Text(text = stringResource(id = textResource))
+        Text(
+            text = stringResource(id = textResource),
+            fontWeight = FontWeight.Light,
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onSecondary
+        )
     }
 }
 
@@ -67,8 +73,8 @@ fun HollowText(
 }
 
 @Composable
-fun HorizontalHollowDivider() {
-    Divider(Modifier.height(5.dp), color = Color.Transparent)
+fun HorizontalHollowDivider(height: Int) {
+    Divider(modifier = Modifier.height(height.dp), color = Color.Transparent)
 }
 
 @Composable

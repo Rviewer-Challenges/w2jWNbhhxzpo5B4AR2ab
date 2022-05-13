@@ -104,12 +104,10 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
         Row(
             Modifier
                 .align(Alignment.BottomCenter)
-                .padding(20.dp)
+                .padding(bottom = 60.dp)
         ) {
             HollowButton(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(150.dp), textResource = R.string.btn_game_reset
+                textResource = R.string.btn_game_reset
             ) {
                 onReset.invoke()
             }
