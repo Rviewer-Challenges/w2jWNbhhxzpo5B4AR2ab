@@ -22,4 +22,10 @@ with **Jetpack Compose**. It uses the main jetpack components like **ViewModel**
 
 ## :iphone: Screenshots & demo
 
-tbd
+<img src="/screenshots/welcome_screen.png" width="200"><img src="/screenshots/configuration_screen.png" width="200"><img src="/screenshots/game_screen.png" width="200"><img src="/screenshots/result_screen.png" width="200">
+
+<br>
+
+Survey demo:
+
+<img src="/screenshots/game_gif.gif" width="260">

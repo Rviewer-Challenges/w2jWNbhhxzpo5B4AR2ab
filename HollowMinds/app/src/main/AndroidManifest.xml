@@ -13,7 +13,6 @@
         <activity
             android:name=".presenter.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.HollowMinds.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
