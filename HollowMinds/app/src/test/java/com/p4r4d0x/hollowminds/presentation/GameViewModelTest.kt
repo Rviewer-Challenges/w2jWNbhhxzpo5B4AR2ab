@@ -53,7 +53,6 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
 
         viewModelSUT.checkGameStatus()
 
-
         Assert.assertEquals(0, viewModelSUT.pairsMatched.getOrAwaitValue())
         Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
         Assert.assertFalse(viewModelSUT.wonGame.getOrAwaitValue())
@@ -62,12 +61,15 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
     @Test
     fun `test check game status game won`() {
         invokeGetCharacterCardsData()
+        Assert.assertEquals(0, viewModelSUT.movements.getOrAwaitValue())
 
         viewModelSUT.itemRevealed(0)
         viewModelSUT.itemRevealed(2)
         viewModelSUT.checkGameStatus()
         Assert.assertEquals(1, viewModelSUT.pairsMatched.getOrAwaitValue())
         Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertEquals(1, viewModelSUT.movements.getOrAwaitValue())
+
         Assert.assertFalse(viewModelSUT.wonGame.getOrAwaitValue())
 
         viewModelSUT.itemRevealed(1)
@@ -75,6 +77,7 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
         viewModelSUT.checkGameStatus()
         Assert.assertEquals(2, viewModelSUT.pairsMatched.getOrAwaitValue())
         Assert.assertEquals(2, viewModelSUT.totalPairs.getOrAwaitValue())
+        Assert.assertEquals(2, viewModelSUT.movements.getOrAwaitValue())
         Assert.assertTrue(viewModelSUT.wonGame.getOrAwaitValue())
     }
 
@@ -123,7 +126,7 @@ class GameViewModelTest : KoinBaseTest(testViewmodelModule, testUsecasesModules)
     fun `test set item selected`() {
         invokeGetCharacterCardsData()
 
-        viewModelSUT.setItemInList(0,selected = true,matched = false)
+        viewModelSUT.setItemInList(0, selected = true, matched = false)
 
         val expectedList = cardData.toMutableList()
         expectedList[0] = expectedList[0].copy(matched = false, selected = true)

@@ -39,6 +39,7 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
     val time = viewModel.time.observeAsState()
     val pairsMatched = viewModel.pairsMatched.observeAsState()
     val totalPairs = viewModel.totalPairs.observeAsState()
+    val movements = viewModel.movements.observeAsState()
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -59,22 +60,47 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(
-                Modifier.fillMaxWidth(0.5F),
+                Modifier.fillMaxWidth(0.3F),
                 horizontalAlignment = CenterHorizontally
             ) {
                 Text(
                     modifier = Modifier,
                     style = MaterialTheme.typography.h5,
                     color = Color.White,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Justify,
+                    maxLines = 2,
                     text = stringResource(id = R.string.game_remaining_time)
                 )
                 Text(
                     modifier = Modifier,
-                    style = MaterialTheme.typography.h3,
+                    style = MaterialTheme.typography.h4,
                     color = Color.White,
                     text = time.value ?: "00:00"
                 )
+            }
+
+            if (viewModel.charactersLoaded.value == true) {
+                Column(
+                    Modifier.fillMaxWidth(0.6F),
+                    horizontalAlignment = CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.h5,
+                        color = Color.White,
+                        maxLines = 2,
+                        textAlign = TextAlign.Justify,
+                        text = stringResource(id = R.string.game_pairs_unlocked)
+                    )
+                    Text(
+                        modifier = Modifier,
+                        style = MaterialTheme.typography.h4,
+                        color = Color.White,
+                        text = "${pairsMatched.value}/${totalPairs.value}"
+                    )
+                }
             }
 
             if (viewModel.charactersLoaded.value == true) {
@@ -84,23 +110,30 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
                 ) {
                     Text(
                         modifier = Modifier,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         style = MaterialTheme.typography.h5,
                         color = Color.White,
-                        text = stringResource(id = R.string.game_pairs_unlocked)
+                        maxLines = 2,
+                        textAlign = TextAlign.Justify,
+                        text = stringResource(id = R.string.game_movements)
                     )
                     Text(
                         modifier = Modifier,
-                        style = MaterialTheme.typography.h3,
+                        style = MaterialTheme.typography.h4,
                         color = Color.White,
-                        text = "${pairsMatched.value}/${totalPairs.value}"
+                        text = "${movements.value}"
                     )
                 }
             }
 
         }
 
-        GameGrid(viewModel, spanValue, Modifier.wrapContentWidth().align(Alignment.Center))
+        GameGrid(
+            viewModel, spanValue,
+            Modifier
+                .wrapContentWidth()
+                .align(Alignment.Center)
+        )
         Row(
             Modifier
                 .align(Alignment.BottomCenter)
@@ -121,7 +154,13 @@ fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modi
 
     val data = viewModel.characterCardsData
     LazyVerticalGrid(
-        modifier = modifier.width(if(spanValue == 4){ 350.dp } else{380.dp}),
+        modifier = modifier.width(
+            if (spanValue == 4) {
+                350.dp
+            } else {
+                380.dp
+            }
+        ),
         cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {

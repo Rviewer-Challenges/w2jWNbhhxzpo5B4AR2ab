@@ -40,6 +40,10 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
     val totalPairs: MutableLiveData<Int>
         get() = _totalPairs
 
+    private var _movements = MutableLiveData(0)
+    val movements: MutableLiveData<Int>
+        get() = _movements
+
     private val _time = MutableLiveData<String>()
     val time: MutableLiveData<String>
         get() = _time
@@ -81,6 +85,7 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
             val secondSelectedCard = characterCardsData[index]
             firstSelectedCard?.let { fsc ->
                 secondSelectedCard.let { ssc ->
+                    _movements.value = _movements.value?.let { mov -> mov + 1 }
                     if (fsc.second.characterName == ssc.characterName) {
                         setItemInList(fsc.first, selected = true, matched = true)
                         setItemInList(index, selected = true, matched = true)
@@ -98,6 +103,7 @@ class GameViewModel(private val getCharacterCardsUseCase: GetCharacterCardsUseCa
             firstSelectedCard = null
         }
     }
+
 
     fun startTimer() {
         _timerFinished.value = false
