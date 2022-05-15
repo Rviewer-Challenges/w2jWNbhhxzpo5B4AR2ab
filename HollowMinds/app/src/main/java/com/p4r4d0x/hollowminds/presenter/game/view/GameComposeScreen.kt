@@ -100,7 +100,7 @@ fun GameLayout(viewModel: GameViewModel, spanValue: Int, onReset: () -> Unit) {
 
         }
 
-        GameGrid(viewModel, spanValue, Modifier.align(Alignment.Center))
+        GameGrid(viewModel, spanValue, Modifier.wrapContentWidth().align(Alignment.Center))
         Row(
             Modifier
                 .align(Alignment.BottomCenter)
@@ -121,7 +121,7 @@ fun GameGrid(viewModel: GameViewModel, spanValue: Int, modifier: Modifier = Modi
 
     val data = viewModel.characterCardsData
     LazyVerticalGrid(
-        modifier = modifier,
+        modifier = modifier.width(if(spanValue == 4){ 350.dp } else{380.dp}),
         cells = GridCells.Fixed(spanValue),
         contentPadding = PaddingValues(8.dp)
     ) {
