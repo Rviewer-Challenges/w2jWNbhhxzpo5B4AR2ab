@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_continue">Continuar</string>
+    <string name="btn_game_reset" >Resetear partida</string>
+    <string name="btn_retry" >Reintentar</string>
+    <string name="btn_exit">Salir</string>
+
+    <string name="welcome_description" >Bienvenido al mundo de juegos mentales de Hallownest.\n\nPodrás elegir el tablero de juego y emparejar a los peronajes mas ilustres de Hollow Knight.\n\nDisfruta del viaje.</string>
+    <string name="configuration_description"> Selecciona el tamaño del tablero </string>
+    <string name="game_remaining_time">Tiempo restante</string>
+    <string name="game_pairs_unlocked">Parejas descubiertas</string>
+    <string name="game_movements">Movimientos</string>
+    <string name="result_lose_title">Has perdido</string>
+    <string name="result_win_title">Has ganado</string>
+    <string name="result_lose">¡Oops!, se acabó el tiempo y no has conseguido encontrar todas las parejas. Has encontrado %d de %d.</string>
+    <string name="result_win">¡Lo conseguiste! Has encontrado las %d parejas.</string>
+</resources>
